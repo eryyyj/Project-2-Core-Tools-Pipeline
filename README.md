@@ -5,7 +5,7 @@ An end-to-end ELT (Extract, Load, Transform) data pipeline engineered using stan
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 core-tools-pipeline/
@@ -34,13 +34,15 @@ core-tools-pipeline/
 └── requirements.txt            # Python ecosystem dependencies
 ```
 
-Run to initialize the database in your local machine
+# Local Database Deployment
+```text
 docker run --name bootcamp-postgres \
   -e POSTGRES_USER=postgres \
   -e POSTGRES_PASSWORD=postgres \
   -e POSTGRES_DB=bootcamp \
   -p 5432:5432 \
   -d postgres:latest
+```
 
 # Initialize and activate isolated workspace
 python3 -m venv .venv
