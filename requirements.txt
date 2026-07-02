@@ -9,3 +9,6 @@ psycopg2-binary>=2.9.0
 
 # this package is used for testing the functionality of the code
 pytest>=8.0.0
+
+# to download the dataset
+kaggle>=1.5.0

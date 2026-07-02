@@ -1,12 +1,30 @@
-set -e   # exit immediately on any error
+# Exit immediately if a command exits with a non-zero status
+set -e
 
-DATA_URL="https://raw.githubusercontent.com/prasertcbs/basic-dataset/master/netflix_titles.csv"
-OUTPUT_DIR="./data/raw"
-OUTPUT_FILE="$OUTPUT_DIR/netflix_dataset.csv"
+# kaggle configuration
+export KAGGLE_USERNAME="erypisalbon"
+export KAGGLE_KEY="KGAT_b6c1f1982fba097629ab589af173619c"
 
-mkdir -p "$OUTPUT_DIR"
+# path to the dataset on kaggle
+DATASET="shivamb/netflix-shows"
 
-echo "[$(date)] Starting download from $DATA_URL"
-curl -L -o "$OUTPUT_FILE" "$DATA_URL"
-ROW_COUNT=$(wc -l < "$OUTPUT_FILE")
-echo "[$(date)] Download complete: $ROW_COUNT lines saved to $OUTPUT_FILE"
+# path to the directory where the dataset will be downloaded and extracted
+TARGET_DIR="./data/raw"
+
+# exception handling for missing kaggle command-line tool
+if ! command -v kaggle &> /dev/null; then
+    echo "Error: The 'kaggle' command-line tool is not installed."
+    echo "Please run: pip install kaggle"
+    exit 1
+fi
+
+# creates a directory if the target directory does not exist
+echo "Creating directory at: $TARGET_DIR"
+mkdir -p "$TARGET_DIR"
+
+# downloading and unzipping the dataset from Kaggle
+echo "Starting download for: $DATASET..."
+kaggle datasets download -d "$DATASET" -p "$TARGET_DIR" --unzip
+
+# success message after the dataset has been downloaded and extracted
+echo "Success! Dataset downloaded and extracted to $TARGET_DIR"
