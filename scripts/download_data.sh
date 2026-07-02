@@ -1,9 +1,12 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
+read -r -p "Enter your Kaggle username: " KAGGLE_USERNAME
+read -r -p "Enter your Kaggle API key: " KAGGLE_KEY
+
 # kaggle configuration
-export KAGGLE_USERNAME="erypisalbon"
-export KAGGLE_KEY="KGAT_b6c1f1982fba097629ab589af173619c"
+export KAGGLE_USERNAME="$KAGGLE_USERNAME"
+export KAGGLE_KEY="$KAGGLE_KEY"
 
 # path to the dataset on kaggle
 DATASET="shivamb/netflix-shows"
