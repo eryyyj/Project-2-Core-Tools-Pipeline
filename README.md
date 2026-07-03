@@ -1,4 +1,3 @@
-```markdown
 # Project-2-Core-Tools-Pipeline
 This repository contains my compliance for the Week 2 deliverables.
 
@@ -32,8 +31,6 @@ core-tools-pipeline/
 ├── .gitignore                  # Protection rules preventing binary/massive file leaks
 ├── README.md                   # Project blueprint and execution manual
 └── requirements.txt            # Python ecosystem dependencies
-
-```
 
 ---
 
