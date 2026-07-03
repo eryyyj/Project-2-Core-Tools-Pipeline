@@ -4,7 +4,6 @@ This repository contains my compliance for the Week 2 deliverables.
 
 An end-to-end ELT (Extract, Load, Transform) data pipeline engineered using standard Shell scripting, Apache PySpark, Pandas, and PostgreSQL. This project demonstrates foundational data engineering practices including infrastructure containerization, explicit schema enforcement, staging database implementation, and robust data cleaning.
 
----
 
 ## Project Structure
 
