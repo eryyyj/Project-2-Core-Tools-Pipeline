@@ -1,5 +1,5 @@
 -- 1. The Content Boom (Year-over-Year Growth)
--- Calculates how many titles Netflix added each year, and compares it to the previous year's total to see if their acquisition rate is growing or shrinking.
+-- this query calculates how many titles Netflix added each year, and compares it to the previous year's total to see if their acquisition rate is growing or shrinking.
 WITH YearlyCounts AS (
     SELECT 
         EXTRACT(YEAR FROM date_added) AS added_year,
@@ -17,7 +17,7 @@ FROM YearlyCounts
 ORDER BY added_year;
 
 -- 2. Regional Top Directors (Ranking)
--- Ranks directors based on how many titles they have produced, partitioned by country.
+-- this query ranks directors based on how many titles they have produced, partitioned by country.
 WITH DirectorCounts AS (
     SELECT 
         country,
@@ -28,7 +28,7 @@ WITH DirectorCounts AS (
     GROUP BY country, director
 ),
 RankedDirectors AS (
-    -- We calculate the rank in this second CTE
+    -- this CTE is for getting the rank of directors within each country based on the number of titles they have produced
     SELECT 
         country,
         director,
@@ -45,7 +45,7 @@ WHERE regional_rank = 1
 ORDER BY country;
 
 -- 3. The Content Strategy Shift (Movies vs. TV Shows)
--- Analyzes the ratio of Movies to TV Shows released each year over the last decade.
+-- this query analyzes the ratio of Movies to TV Shows released each year over the last decade.
 SELECT 
     release_year,
     type,
@@ -56,7 +56,7 @@ GROUP BY release_year, type
 ORDER BY release_year DESC, type;
 
 -- 4. The "Twin Releases" (Self-Join)
--- Finds directors who released more than one piece of content on Netflix in the exact same year.
+-- this query finds directors who released more than one piece of content on Netflix in the exact same year.
 SELECT 
     t1.director,
     t1.release_year,
@@ -72,7 +72,7 @@ WHERE t1.director IS NOT NULL
 ORDER BY t1.director, t1.release_year DESC;
 
 -- 5. The Longest Movies per Age Rating
--- Finds the single longest movie for each rating category (PG-13, TV-MA, R, etc.).WITH MovieDurations AS (
+-- this query finds the single longest movie for each rating category (PG-13, TV-MA, R, etc.).
 WITH MovieDurations AS (
     SELECT 
         rating,
