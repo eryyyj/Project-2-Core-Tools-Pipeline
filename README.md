@@ -126,7 +126,3 @@ When you are finished running the pipeline and analyzing the data, you can safel
 docker-compose down
 
 ```
-
-```
-
-```
