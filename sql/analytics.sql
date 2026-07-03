@@ -16,7 +16,7 @@ SELECT
 FROM YearlyCounts
 ORDER BY added_year;
 
--- 2. Regional Top Directors
+-- 2. Regional Top Directors (Ranking)
 -- Ranks directors based on how many titles they have produced, partitioned by country.
 WITH DirectorCounts AS (
     SELECT 
@@ -26,15 +26,22 @@ WITH DirectorCounts AS (
     FROM staging_clean
     WHERE director IS NOT NULL AND country IS NOT NULL
     GROUP BY country, director
+),
+RankedDirectors AS (
+    -- We calculate the rank in this second CTE
+    SELECT 
+        country,
+        director,
+        title_count,
+        RANK() OVER (PARTITION BY country ORDER BY title_count DESC) AS regional_rank
+    FROM DirectorCounts
 )
 SELECT 
     country,
     director,
-    title_count,
-    RANK() OVER (PARTITION BY country ORDER BY title_count DESC) AS regional_rank
-FROM DirectorCounts
--- getting only the top-ranked directors for each country
-WHERE RANK() OVER (PARTITION BY country ORDER BY title_count DESC) = 1
+    title_count
+FROM RankedDirectors
+WHERE regional_rank = 1
 ORDER BY country;
 
 -- 3. The Content Strategy Shift (Movies vs. TV Shows)
