@@ -68,7 +68,7 @@ python src/load_data.py
 python src/clean_data.py
 ```
 
-### How to Execute the SQL Queries
+## How to Execute the SQL Queries
 
 Because this pipeline uses a local PostgreSQL database container, you need a SQL client (like DBeaver or VS Code Database extensions) to view the analytical results. 
 
@@ -87,3 +87,8 @@ Because this pipeline uses a local PostgreSQL database container, you need a SQL
 3. Open `sql/analytics.sql` directly inside VS Code.
 4. Highlight the query block you wish to run and click **"▷ Run on active connection"** (or use the extension's specific shortcut).
 5. The results will appear in a split-pane view on the right side of your editor.
+
+## how to run the testing
+```text
+pytest src/testings.py
+```
