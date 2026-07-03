@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # Service 1: Your PostgreSQL Database
+  db:
+    image: postgres:latest
+    container_name: bootcamp-postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bootcamp
+    ports:
+      - "5432:5432"
+
+  # Service 2: Your Pipeline Workspace
+  app:
+    build: .
+    container_name: bootcamp-pipeline-app
+    depends_on:
+      - db
+    volumes:
+      # Syncs your local code to the container so you don't have to rebuild after every edit!
+      - .:/app

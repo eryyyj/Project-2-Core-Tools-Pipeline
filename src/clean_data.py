@@ -37,7 +37,7 @@ def format_date_columns(df):
 def run_pipeline():
     # main execution
     print("Connecting to database...")
-    engine = create_engine("postgresql://postgres:postgres@localhost:5432/bootcamp")
+    engine = create_engine("postgresql://postgres:postgres@db:5432/bootcamp")
     df = pd.read_sql("SELECT * FROM staging_raw", engine)
     
     # this code blocks is for cleaning the data by calling the functions defined above

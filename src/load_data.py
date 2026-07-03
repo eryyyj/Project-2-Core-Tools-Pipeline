@@ -29,7 +29,7 @@ schema = StructType([
 df = spark.read.csv("data/raw/netflix_titles.csv", header=True, schema=schema,quote='"', escape='"',multiLine=True)
 
 # configuring the database connection properties and writing the DataFrame to the PostgreSQL database
-DB_URL = "jdbc:postgresql://localhost:5432/bootcamp"
+DB_URL = "jdbc:postgresql://db:5432/bootcamp"
 PROPS = {"user": "postgres", "password": "postgres", "driver": "org.postgresql.Driver"}
 
 # writing the DataFrame to the staging_raw table in the database, overwriting any existing data
