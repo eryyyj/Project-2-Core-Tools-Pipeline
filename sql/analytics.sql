@@ -28,7 +28,6 @@ WITH DirectorCounts AS (
     GROUP BY country, director
 ),
 RankedDirectors AS (
-    -- this CTE is for getting the rank of directors within each country based on the number of titles they have produced
     SELECT 
         country,
         director,
@@ -72,7 +71,7 @@ WHERE t1.director IS NOT NULL
 ORDER BY t1.director, t1.release_year DESC;
 
 -- 5. The Longest Movies per Age Rating
--- this query finds the single longest movie for each rating category (PG-13, TV-MA, R, etc.).
+-- this query finds the single longest movie for each rating category (PG-13, TV-MA, R, etc.).WITH MovieDurations AS (
 WITH MovieDurations AS (
     SELECT 
         rating,
