@@ -32,6 +32,7 @@ core-tools-pipeline/
 ├── README.md                   # Project blueprint and execution manual
 └── requirements.txt            # Python ecosystem dependencies
 
+```
 
 ## System Prerequisites & Infrastructure Setup
 
