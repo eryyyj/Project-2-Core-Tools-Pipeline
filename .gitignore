@@ -3,10 +3,6 @@ data/
 *.csv
 *.json
 
-# Ignore Java JDBC drivers
-drivers/
-*.jar
-
 # Ignore Python environment and cache files
 __pycache__/
 *.pyc
