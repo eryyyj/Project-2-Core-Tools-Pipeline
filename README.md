@@ -31,7 +31,7 @@ core-tools-pipeline/
 ├── .gitignore # Protection rules preventing binary/massive file leaks
 ├── README.md # Project blueprint and execution manual
 └── requirements.txt # Python ecosystem dependencies
-
+```
 
 ## System Prerequisites & Infrastructure Setup
 
@@ -43,8 +43,6 @@ Run the following command in the root directory to spin up the PostgreSQL databa
 
 ```bash
 docker compose up -d --build
-
-
 ```
 
 * **Database Service (`db`):** Hosts the PostgreSQL `bootcamp` database mapped to `localhost:5432`.
@@ -72,8 +70,6 @@ Reads the downloaded CSV and strictly enforces the schema before loading it into
 
 ```bash
 docker exec -it bootcamp-pipeline-app python src/load_data.py
-
-
 ```
 
 ### Phase 3: Pandas Data Cleaning
@@ -82,8 +78,6 @@ Extracts data from the raw table, applies deduplication, handles nulls, formats 
 
 ```bash
 docker exec -it bootcamp-pipeline-app python src/clean_data.py
-
-
 ```
 
 ### Phase 4: Unit Testing (Stretch Goal)
@@ -92,8 +86,6 @@ Runs Pytest to validate that the Pandas text and null-cleaning logic performs ex
 
 ```bash
 docker exec -it bootcamp-pipeline-app pytest src/testings.py
-
-
 ```
 
 ---
@@ -148,4 +140,3 @@ When you are finished running the pipeline and analyzing the data, you can safel
 ```bash
 docker compose down
 ```
-
