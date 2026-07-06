@@ -1,4 +1,3 @@
-```markdown
 # Project-2-Core-Tools-Pipeline
 This repository contains my compliance for the Week 2 deliverables.
 
@@ -33,8 +32,6 @@ core-tools-pipeline/
 ├── README.md # Project blueprint and execution manual
 └── requirements.txt # Python ecosystem dependencies
 
-
-```
 
 ## System Prerequisites & Infrastructure Setup
 
