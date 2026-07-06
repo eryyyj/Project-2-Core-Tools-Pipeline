@@ -43,7 +43,7 @@ This pipeline is fully containerized. You do not need to install Python, Java, o
 Run the following command in the root directory to spin up the PostgreSQL database and the Python/PySpark execution environment simultaneously:
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 
 ```
 
@@ -123,6 +123,6 @@ Because this pipeline maps the containerized PostgreSQL database directly to you
 When you are finished running the pipeline and analyzing the data, you can safely shut down the containers and clean up your Docker network by running:
 
 ```bash
-docker-compose down
+docker compose down
 
 ```
