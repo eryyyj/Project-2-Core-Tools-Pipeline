@@ -32,6 +32,26 @@ core-tools-pipeline/
 ├── README.md # Project blueprint and execution manual
 └── requirements.txt # Python ecosystem dependencies
 ```
+---
+
+## Setting Up the Database Connection (DBeaver)
+
+Before running the analytical queries, you will need to connect a local SQL client to the Dockerized PostgreSQL database. Here is how to configure DBeaver:
+
+1. Open **DBeaver** and click the **"New Database Connection"** icon (the plug with a plus sign in the top-left corner).
+2. Select **PostgreSQL** from the list of databases and click **Next**.
+3. Under the **Main** tab, fill in the connection details:
+* **Host:** `localhost`
+* **Port:** `5432`
+* **Database:** `bootcamp`
+* **Username:** `postgres`
+* **Password:** `postgres`
+
+
+4. Click **Test Connection** at the bottom left. *(Note: If DBeaver prompts you to download the PostgreSQL driver files, click "Download" to allow it).*
+5. Once the test says "Connected", click **Finish**. You can now see the `bootcamp` database in your Database Navigator panel!
+
+---
 
 ## System Prerequisites & Infrastructure Setup
 
@@ -87,25 +107,6 @@ Runs Pytest to validate that the Pandas text and null-cleaning logic performs ex
 ```bash
 docker exec -it bootcamp-pipeline-app pytest src/testings.py
 ```
-
----
-
-## Setting Up the Database Connection (DBeaver)
-
-Before running the analytical queries, you will need to connect a local SQL client to the Dockerized PostgreSQL database. Here is how to configure DBeaver:
-
-1. Open **DBeaver** and click the **"New Database Connection"** icon (the plug with a plus sign in the top-left corner).
-2. Select **PostgreSQL** from the list of databases and click **Next**.
-3. Under the **Main** tab, fill in the connection details:
-* **Host:** `localhost`
-* **Port:** `5432`
-* **Database:** `bootcamp`
-* **Username:** `postgres`
-* **Password:** `postgres`
-
-
-4. Click **Test Connection** at the bottom left. *(Note: If DBeaver prompts you to download the PostgreSQL driver files, click "Download" to allow it).*
-5. Once the test says "Connected", click **Finish**. You can now see the `bootcamp` database in your Database Navigator panel!
 
 ---
 
