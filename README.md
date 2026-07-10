@@ -32,6 +32,21 @@ core-tools-pipeline/
 ├── README.md # Project blueprint and execution manual
 └── requirements.txt # Python ecosystem dependencies
 ```
+
+## System Prerequisites & Infrastructure Setup
+
+This pipeline is fully containerized. You do not need to install Python, Java, or PostgreSQL locally on your machine. You only need **Docker** and **Docker Compose** installed.
+
+### 1. Build and Launch the Environment
+
+Run the following command in the root directory to spin up the PostgreSQL database and the Python/PySpark execution environment simultaneously:
+
+```bash
+docker compose up -d --build
+```
+
+* **Database Service (`db`):** Hosts the PostgreSQL `bootcamp` database mapped to `localhost:5432`.
+* **Application Service (`app`):** Runs an isolated container (`bootcamp-pipeline-app`) with Python, Java, PySpark, and Pandas installed.
 ---
 
 ## Setting Up the Database Connection (DBeaver)
@@ -50,24 +65,6 @@ Before running the analytical queries, you will need to connect a local SQL clie
 
 4. Click **Test Connection** at the bottom left. *(Note: If DBeaver prompts you to download the PostgreSQL driver files, click "Download" to allow it).*
 5. Once the test says "Connected", click **Finish**. You can now see the `bootcamp` database in your Database Navigator panel!
-
----
-
-## System Prerequisites & Infrastructure Setup
-
-This pipeline is fully containerized. You do not need to install Python, Java, or PostgreSQL locally on your machine. You only need **Docker** and **Docker Compose** installed.
-
-### 1. Build and Launch the Environment
-
-Run the following command in the root directory to spin up the PostgreSQL database and the Python/PySpark execution environment simultaneously:
-
-```bash
-docker compose up -d --build
-```
-
-* **Database Service (`db`):** Hosts the PostgreSQL `bootcamp` database mapped to `localhost:5432`.
-* **Application Service (`app`):** Runs an isolated container (`bootcamp-pipeline-app`) with Python, Java, PySpark, and Pandas installed.
-
 ---
 
 ## Data Pipeline Execution Guide
