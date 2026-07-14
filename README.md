@@ -1,61 +1,110 @@
-# Project-2-Core-Tools-Pipeline
-This repository contains my compliance for the Week 2 deliverables.
+# Netflix ELT Pipeline: Orchestrated with Apache Airflow & dbt
 
-An end-to-end ELT (Extract, Load, Transform) data pipeline engineered using standard Shell scripting, Apache PySpark, Pandas, and PostgreSQL. This project demonstrates foundational data engineering practices including infrastructure containerization, explicit schema enforcement, staging database implementation, and robust data cleaning.
+This repository contains an end-to-end ELT (Extract, Load, Transform) data pipeline engineered for automation. It transitions from a manual execution model to a fully orchestrated workflow using **Apache Airflow**, **Apache PySpark**, **dbt (data build tool)**, and **PostgreSQL**.
 
+This project demonstrates advanced data engineering practices including infrastructure containerization, DAG-based orchestration, idempotency, data quality testing, and analytics engineering.
 
-## Project Structure
+## 🏗️ Architecture & Tech Stack
+
+* **Orchestration:** Apache Airflow
+* **Extraction (Extract):** Bash & Kaggle CLI
+* **Data Processing (Load):** Apache PySpark
+* **Transformation & Testing (Transform):** dbt (Data Build Tool)
+* **Data Warehouse:** PostgreSQL
+* **Infrastructure:** Docker & Docker Compose
+
+---
+
+## 📂 Project Structure
 
 ```text
-core-tools-pipeline/
+Project-2-Core-Tools-Pipeline/
+│
+├── dags/
+│   └── data_pipeline.py            # Airflow DAG definition and task ordering
 │
 ├── data/
-│   └── raw/                    
+│   └── raw/                        # Target directory for downloaded CSVs
 │
 ├── drivers/
-│   └── postgresql-42.7.3.jar   
+│   └── postgresql-42.7.12.jar      # PySpark PostgreSQL connection driver
 │
 ├── scripts/
-│   └── download_data.sh        
+│   ├── download_data.sh            # Kaggle API extraction script
+│   └── load_data.py                # PySpark script to load data to Postgres
 │
-├── src/
-│   ├── load_data.py # file for loading the dataset to databse
-│   ├── clean_data.py # file for transforming the raw data 
-│   └── testings.py # file for running the cleaning functions of the clean_data.py
+├── week34_project/                 # dbt project directory
+│   ├── models/                     # SQL transformation models
+│   ├── dbt_project.yml             # dbt configuration
+│   └── profiles.yml                # Database connection profiles for dbt
 │
-├── sql/
-│   └── analytics.sql # file for executing SQL queries to the dataset
-│
-├── docker-compose.yml # Multi-container orchestration (App + Database)
-├── Dockerfile # Pipeline execution environment blueprint
-├── .gitignore # Protection rules preventing binary/massive file leaks
-├── README.md # Project blueprint and execution manual
-└── requirements.txt # Python ecosystem dependencies
+├── docker-compose.yml              # Multi-container orchestration (Airflow + Postgres)
+├── Dockerfile                      # Custom Airflow image with PySpark/dbt installed
+├── .gitignore                      # Protection rules preventing secret/data leaks
+└── README.md                       # Project blueprint and execution manual
+
 ```
 
-## System Prerequisites & Infrastructure Setup
+---
 
-This pipeline is fully containerized. You do not need to install Python, Java, or PostgreSQL locally on your machine. You only need **Docker** and **Docker Compose** installed.
+## ⚙️ System Prerequisites & Setup
 
-### 1. Build and Launch the Environment
+This pipeline is fully containerized. You only need **Docker** and **Docker Compose** installed on your host machine.
 
-Run the following command in the root directory to spin up the PostgreSQL database and the Python/PySpark execution environment simultaneously:
+### 1. Configure Kaggle API Credentials
+
+To allow Airflow to securely download the dataset without human intervention, you must provide Kaggle API credentials via a local environment variable file.
+
+1. Create a file named exactly **`.env`** in the root directory of this project.
+2. Add your Kaggle credentials inside the file:
+
+```text
+KAGGLE_USERNAME=your_kaggle_username
+KAGGLE_KEY=your_kaggle_api_key
+
+```
+
+*(Note: Ensure `.env` is listed in your `.gitignore` to prevent leaking your keys to GitHub).*
+
+### 2. Build and Launch the Cluster
+
+Run the following command in the root directory to spin up the PostgreSQL database and the Airflow infrastructure simultaneously:
 
 ```bash
 docker compose up -d --build
+
 ```
 
-* **Database Service (`db`):** Hosts the PostgreSQL `bootcamp` database mapped to `localhost:5432`.
-* **Application Service (`app`):** Runs an isolated container (`bootcamp-pipeline-app`) with Python, Java, PySpark, and Pandas installed.
 ---
 
-## Setting Up the Database Connection (DBeaver)
+## 🚀 Pipeline Execution (Apache Airflow)
 
-Before running the analytical queries, you will need to connect a local SQL client to the Dockerized PostgreSQL database. Here is how to configure DBeaver:
+Because this pipeline is orchestrated, you no longer need to execute individual scripts manually. Airflow handles the scheduling, execution, and dependency mapping.
 
-1. Open **DBeaver** and click the **"New Database Connection"** icon (the plug with a plus sign in the top-left corner).
-2. Select **PostgreSQL** from the list of databases and click **Next**.
-3. Under the **Main** tab, fill in the connection details:
+1. **Access the UI:** Open your web browser and navigate to `http://localhost:8080`.
+2. **Login:** Use the default Airflow credentials (Username: `airflow` / Password: `airflow`).
+3. **Locate the DAG:** Find the pipeline named **`netflix_elt_pipeline`** in the DAGs list.
+4. **Enable the DAG:** Click the toggle switch on the far left to unpause the DAG (it will turn blue).
+5. **Trigger a Run:** Click the **"▶" (Play)** button in the top right corner and select **Trigger DAG**.
+6. **Monitor Execution:** Click on the DAG name and navigate to the **Graph** or **Grid** view to watch the pipeline execute in real-time.
+
+**The pipeline will automatically execute the following steps in strict order:**
+
+1. `extract`: Downloads the Netflix dataset via Kaggle API.
+2. `load`: Uses PySpark to read the CSV and load it into PostgreSQL.
+3. `dbt_run`: Executes dbt SQL models to transform the raw data into analytics-ready tables.
+4. `dbt_test`: Runs automated data quality tests (e.g., checking for null values or duplicates) to validate the transformations.
+
+---
+
+## 📊 Analyzing the Data (DBeaver)
+
+Once the Airflow pipeline successfully completes (all tasks turn green), the transformed data is ready for analysis in your PostgreSQL database.
+
+**Connecting DBeaver:**
+
+1. Open **DBeaver** and create a new **PostgreSQL** connection.
+2. Under the **Main** tab, fill in the connection details:
 * **Host:** `localhost`
 * **Port:** `5432`
 * **Database:** `bootcamp`
@@ -63,96 +112,16 @@ Before running the analytical queries, you will need to connect a local SQL clie
 * **Password:** `postgres`
 
 
-4. Click **Test Connection** at the bottom left. *(Note: If DBeaver prompts you to download the PostgreSQL driver files, click "Download" to allow it).*
-5. Once the test says "Connected", click **Finish**. You can now see the `bootcamp` database in your Database Navigator panel!
----
-
-## Setting Up the Database Connection (DBeaver)
-
-Before running the analytical queries, you will need to connect a local SQL client to the Dockerized PostgreSQL database. Here is how to configure DBeaver:
-
-1. Open **DBeaver** and click the **"New Database Connection"** icon (the plug with a plus sign in the top-left corner).
-2. Select **PostgreSQL** from the list of databases and click **Next**.
-3. Under the **Main** tab, fill in the connection details:
-* **Host:** `localhost`
-* **Port:** `5432`
-* **Database:** `bootcamp`
-* **Username:** `postgres`
-* **Password:** `postgres`
-
-
-4. Click **Test Connection** at the bottom left. *(Note: If DBeaver prompts you to download the PostgreSQL driver files, click "Download" to allow it).*
-5. Once the test says "Connected", click **Finish**. You can now see the `bootcamp` database in your Database Navigator panel! 
----
-
-## Data Pipeline Execution Guide
-
-Because the pipeline relies on the containerized environment, all scripts must be executed *inside* the running application container using `docker exec`.
-
-### Phase 1: Data Ingestion
-
-Downloads the remote structured dataset through a raw-text boundary.
-
-```bash
-docker exec -it bootcamp-pipeline-app bash scripts/download_data.sh
-
-
-```
-
-### Phase 2: PySpark Staging Integration
-
-Reads the downloaded CSV and strictly enforces the schema before loading it into the Postgres `staging_raw` table.
-
-```bash
-docker exec -it bootcamp-pipeline-app python src/load_data.py
-```
-
-### Phase 3: Pandas Data Cleaning
-
-Extracts data from the raw table, applies deduplication, handles nulls, formats dates, and loads it into the `staging_clean` table.
-
-```bash
-docker exec -it bootcamp-pipeline-app python src/clean_data.py
-```
-
-### Phase 4: Unit Testing (Stretch Goal)
-
-Runs Pytest to validate that the Pandas text and null-cleaning logic performs exactly as expected.
-
-```bash
-docker exec -it bootcamp-pipeline-app pytest src/testings.py
-```
+3. Click **Test Connection**, allow any driver downloads if prompted, and click **Finish**.
+4. You can now query your final dbt models (tables/views) directly from the `bootcamp` database to generate analytical insights!
 
 ---
 
-## Phase 5: Analytical SQL Execution
+## 🧹 Environment Teardown
 
-Because this pipeline maps the containerized PostgreSQL database directly to your host machine's port, you can use any local SQL client to view the analytical results.
-
-**Prerequisite:** Ensure the `docker-compose` environment is running and you have successfully executed Phase 3 (`clean_data.py`) so the `staging_clean` table exists.
-
-#### Option A: Using DBeaver (Recommended)
-
-1. Ensure you have completed the connection setup steps above.
-2. Go to **File** > **Open File...** and select `sql/analytics.sql` from this repository.
-3. In the top toolbar of the SQL Editor, ensure the **Active DataSource** is set to your `postgres` connection and the `bootcamp` database.
-4. Click inside any of the query blocks and press **`Ctrl + Enter`** (Windows/Linux) or **`Cmd + Enter`** (Mac) to execute that specific query.
-5. The results will populate in the data grid at the bottom of the screen.
-
-#### Option B: Using VS Code (With Database Extension)
-
-1. Ensure you have a SQL extension installed (e.g., *PostgreSQL* or *SQLTools*).
-2. Create a new connection to `localhost:5432` (User: `postgres`, Password: `postgres`, Database: `bootcamp`).
-3. Open `sql/analytics.sql` directly inside VS Code.
-4. Highlight the query block you wish to run and click **"▷ Run on active connection"**.
-5. The results will appear in a split-pane view on the right side of your editor.
-
----
-
-## Environment Teardown
-
-When you are finished running the pipeline and analyzing the data, you can safely shut down the containers and clean up your Docker network by running:
+When you are finished running the pipeline and analyzing the data, you can safely shut down the Airflow webserver, scheduler, and database containers by running:
 
 ```bash
 docker compose down
+
 ```
