@@ -32,7 +32,6 @@ services:
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@db/bootcamp
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
-    # This command creates the backend tables and your UI login credentials!
     command: >
       bash -c "airflow db migrate && 
       airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com"
