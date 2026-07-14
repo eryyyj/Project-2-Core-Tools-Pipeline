@@ -47,7 +47,24 @@ docker compose up -d --build
 
 * **Database Service (`db`):** Hosts the PostgreSQL `bootcamp` database mapped to `localhost:5432`.
 * **Application Service (`app`):** Runs an isolated container (`bootcamp-pipeline-app`) with Python, Java, PySpark, and Pandas installed.
+---
 
+## Setting Up the Database Connection (DBeaver)
+
+Before running the analytical queries, you will need to connect a local SQL client to the Dockerized PostgreSQL database. Here is how to configure DBeaver:
+
+1. Open **DBeaver** and click the **"New Database Connection"** icon (the plug with a plus sign in the top-left corner).
+2. Select **PostgreSQL** from the list of databases and click **Next**.
+3. Under the **Main** tab, fill in the connection details:
+* **Host:** `localhost`
+* **Port:** `5432`
+* **Database:** `bootcamp`
+* **Username:** `postgres`
+* **Password:** `postgres`
+
+
+4. Click **Test Connection** at the bottom left. *(Note: If DBeaver prompts you to download the PostgreSQL driver files, click "Download" to allow it).*
+5. Once the test says "Connected", click **Finish**. You can now see the `bootcamp` database in your Database Navigator panel!
 ---
 
 ## Setting Up the Database Connection (DBeaver)
