@@ -9,3 +9,14 @@ __pycache__/
 .venv/
 env/
 .pytest_cache/
+
+
+# Python/Spark temp files
+pymp-*
+.pytest_cache/
+__pycache__/
+
+# Airflow/dbt logs and cache
+logs/
+target/
+dbt_packages/

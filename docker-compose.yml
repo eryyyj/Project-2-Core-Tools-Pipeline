@@ -16,8 +16,53 @@ services:
   app:
     build: .
     container_name: bootcamp-pipeline-app
+    image: custom-airflow-image:latest
     depends_on:
       - db
     volumes:
       # automatically mount the current directory to /app in the container
       - .:/app
+
+  airflow-init:
+    image: custom-airflow-image:latest
+    depends_on:
+      - db
+    environment:
+      - AIRFLOW_HOME=/app
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@db/bootcamp
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    # This command creates the backend tables and your UI login credentials!
+    command: >
+      bash -c "airflow db migrate && 
+      airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com"
+
+  airflow-webserver:
+    image: custom-airflow-image:latest
+    depends_on:
+      - db
+      - airflow-init
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    environment:
+      - AIRFLOW_HOME=/app
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@db/bootcamp
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    command: airflow webserver
+
+  airflow-scheduler:
+    image: custom-airflow-image:latest
+    depends_on:
+      - db
+      - airflow-init
+    volumes:
+      - .:/app
+    environment:
+      - AIRFLOW_HOME=/app
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@db/bootcamp
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    command: airflow scheduler

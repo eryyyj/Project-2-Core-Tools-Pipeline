@@ -65,7 +65,7 @@ Before running the analytical queries, you will need to connect a local SQL clie
 
 
 4. Click **Test Connection** at the bottom left. *(Note: If DBeaver prompts you to download the PostgreSQL driver files, click "Download" to allow it).*
-5. Once the test says "Connected", click **Finish**. You can now see the `bootcamp` database in your Database Navigator panel!
+5. Once the test says "Connected", click **Finish**. You can now see the `bootcamp` database in your Database Navigator panel! 
 ---
 
 ## Data Pipeline Execution Guide

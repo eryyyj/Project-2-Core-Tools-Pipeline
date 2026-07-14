@@ -1,0 +1,12 @@
+week34_project:
+  outputs:
+    dev:
+      type: postgres
+      threads: 4
+      host: db
+      port: 5432
+      user: postgres
+      pass: postgres
+      dbname: bootcamp
+      schema: public
+  target: dev
