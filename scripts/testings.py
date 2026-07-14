@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 
 # importing the specific functions from the clean_data.py file to test them
-from clean_data import drop_missing_titles, fill_nulls_with_unknown, deduplicate_records, clean_text_formatting, format_date_columns
+from scripts.clean_data import drop_missing_titles, fill_nulls_with_unknown, deduplicate_records, clean_text_formatting, format_date_columns
 
 # testing 1: drops the record with missing titles
 def test_drop_missing_titles():

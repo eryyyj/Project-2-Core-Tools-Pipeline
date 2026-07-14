@@ -6,7 +6,7 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType, 
 # creating a SparkSession object to work with Spark
 spark = SparkSession.builder \
         .appName("Load Data") \
-        .config("spark.jars", "drivers/postgresql-42.7.12.jar") \
+        .config("spark.jars", "/app/drivers/postgresql-42.7.12.jar") \
         .getOrCreate()
 
 # defining the schema for the data to be loaded into the database
@@ -26,7 +26,7 @@ schema = StructType([
 ])
 
 # reading the CSV file into a Spark DataFrame using the defined schema
-df = spark.read.csv("data/raw/netflix_titles.csv", header=True, schema=schema,quote='"', escape='"',multiLine=True)
+df = spark.read.csv("/app/data/raw/netflix_titles.csv", header=True, schema=schema,quote='"', escape='"',multiLine=True)
 
 # configuring the database connection properties and writing the DataFrame to the PostgreSQL database
 DB_URL = "jdbc:postgresql://db:5432/bootcamp"
