@@ -39,8 +39,10 @@ services:
   airflow-webserver:
     image: custom-airflow-image:latest
     depends_on:
-      - db
-      - airflow-init
+      db:
+        condition: service_started
+      airflow-init:
+        condition: service_completed_successfully
     ports:
       - "8080:8080"
     volumes:
@@ -55,10 +57,14 @@ services:
   airflow-scheduler:
     image: custom-airflow-image:latest
     depends_on:
-      - db
-      - airflow-init
+      db:
+        condition: service_started
+      airflow-init:
+        condition: service_completed_successfully
     volumes:
       - .:/app
+    env_file:
+      - .env
     environment:
       - AIRFLOW_HOME=/app
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@db/bootcamp

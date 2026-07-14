@@ -1,10 +1,6 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# kaggle configuration
-export KAGGLE_USERNAME="erypisalbon"
-export KAGGLE_KEY="GAT_9a23617605849e0899611f4712538fc4"
-
 # path to the dataset on kaggle
 DATASET="shivamb/netflix-shows"
 
