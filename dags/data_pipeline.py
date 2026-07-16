@@ -29,6 +29,14 @@ with DAG(
             bash_command="bash /app/scripts/download_data.sh ",
         )
 
+        check_file = FileSensor(
+            task_id="check_file",
+            filepath="/app/data/raw/netflix_titles.csv",
+            poke_interval=10,
+            timeout=60 * 5,
+        )
+
+        extract_data >> check_file
 
 
     # this task is for pushing the data into the staging_raw table in the database using Spark
