@@ -18,7 +18,7 @@ movie_duration as (
         release_year,
         cast(split_part(duration, ' ', 1) as integer) as duration_minutes
     from staged_data
-    where show_type = 'Movies'
+    where show_type = 'Movie'
         and duration like '% min'
         and rating != 'Unknown'
 )

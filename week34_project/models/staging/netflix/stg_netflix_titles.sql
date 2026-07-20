@@ -14,13 +14,17 @@ deduplicated_and_filtered as (
 cleaned as (
     select
         coalesce(trim(show_id), 'Unknown') as show_id, -- this fixes the value string of the column and replaces null values with unknown
-        coalesce(initcap('type'), 'Unknown') as show_type, -- this transforms the value string of the column into title case and replaces null values with unknown
+        case 
+            when lower(trim("type")) = 'movie' then 'Movie'
+            when lower(trim("type")) = 'tv show' then 'TV Show'
+            else 'Unknown'
+        end as show_type, -- this transforms the value string of the column into title case and replaces null values with unknown
 
         initcap(trim(title)) as show_title, -- transforms the value string to tile case
 
         -- this fixes the value string of the column and replaces null values with unknown
         coalesce(trim(director),'Unknown') as director, 
-        coalesce(trim('cast'), 'Unknown') as casts,
+        coalesce(trim("cast"), 'Unknown') as casts,
         coalesce(trim(country), 'Unknown') as country,
         coalesce(trim(rating), 'Unknown') as rating,
         coalesce(trim(duration), 'Unknown') as duration,
