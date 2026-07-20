@@ -9,7 +9,7 @@ from airflow.sensors.filesystem import FileSensor
 default_args = {
     "owner": "eryyy",
     "retries": 1,
-    "retry_delay": timedelta(minutes=5),
+    "retry_delay": timedelta(minutes=1),
 }
 
 # defining the DAG
@@ -45,20 +45,10 @@ with DAG(
         bash_command="python /app/scripts/load_data.py",
     )
 
-    with TaskGroup("dbt_tasks", tooltip="Tasks for dbt") as dbt_tasks:
-        # this task is for transforming the data using dbt models to ensure that the data is in the correct format and structure
-        transform = BashOperator(
-            task_id="transform",
-            bash_command="dbt run --project-dir /app/week34_project --profiles-dir /app/week34_project",
-        )
-
-        # this task is for  testing the dbt models to ensure they are working as expected
-        test = BashOperator(
-            task_id="test",
-            bash_command="dbt test --project-dir /app/week34_project --profiles-dir /app/week34_project",
-        )
-        
-        transform >> test
+    dbt_pipeline = BashOperator(
+        task_id="transform",
+        bash_command = "dbt build --project-dir /app/week34_project --profiles-dir /app/week34_project --target airflow",
+    )
 
     # defining the dependencies
-    extract_task >> load >> dbt_tasks
+    extract_task >> load >> dbt_pipeline

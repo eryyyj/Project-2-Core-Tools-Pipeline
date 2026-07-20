@@ -1,0 +1,3 @@
+{
+    "dbt.dbtPythonPathOverride": "/home/bonsalip/week2deliverables/Project-2-Core-Tools-Pipeline/.venv/bin/python"
+}

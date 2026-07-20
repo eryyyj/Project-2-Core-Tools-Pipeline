@@ -33,5 +33,5 @@ DB_URL = "jdbc:postgresql://db:5432/bootcamp"
 PROPS = {"user": "postgres", "password": "postgres", "driver": "org.postgresql.Driver"}
 
 # writing the DataFrame to the staging_raw table in the database, overwriting any existing data
-df.write.jdbc(url=DB_URL, table="staging_raw", mode="overwrite", properties=PROPS)
+df.write.option("truncate", "true").jdbc(url=DB_URL, table="staging_raw", mode="overwrite", properties=PROPS)
 print(f"Loaded {df.count()} records into the staging_raw table in the database.")
