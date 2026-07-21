@@ -10,6 +10,7 @@ movie_durations AS (
         show_title,
         duration_minutes
     FROM netflix_titles
+    where show_type = 'Movie' and duration_minutes is not null
 ),
 ranked_movies AS (
     SELECT 

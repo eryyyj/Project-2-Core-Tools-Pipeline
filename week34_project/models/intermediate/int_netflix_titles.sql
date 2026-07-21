@@ -16,11 +16,23 @@ movie_duration as (
         rating,
         date_added,
         release_year,
-        cast(split_part(duration, ' ', 1) as integer) as duration_minutes
-    from staged_data
-    where show_type = 'Movie'
-        and duration like '% min'
-        and rating != 'Unknown'
+        
+        -- Extract minutes for Movies only
+        case 
+            when show_type = 'Movie' and duration like '% min' 
+                then cast(split_part(duration, ' ', 1) as integer)
+            else null 
+        end as duration_minutes,
+
+        -- Extract seasons for TV Shows only
+        case 
+            when show_type = 'TV Show' and duration like '%Season%' 
+                then cast(split_part(duration, ' ', 1) as integer)
+            else null 
+        end as duration_seasons
+
+    from {{ ref('stg_netflix_titles') }}
+    where rating != 'Unknown'
 )
 
 select * from movie_duration
