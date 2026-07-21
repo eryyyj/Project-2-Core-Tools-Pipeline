@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_netflix_titles
+    description: "Staging model for Netflix titles with cleaned text and formatted dates."
+    columns:
+      - name: show_id
+        description: "primary key of the netflix data"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: show_title
+        description: "the title of the show in the data"
+        data_tests:
+          - not_null
+
+      - name: show_type
+        description: "Verifies that type normalization strictly resulted in 'Movie' or 'TV Show'."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['Movie', 'TV Show', 'Unknown']
+
+      - name: director
+        description: "Ensures missing directors were successfully replaced with 'Unknown'."
+        data_tests:
+          - not_null
+
+      - name: duration
+        data_tests:
+          - not_null
